@@ -1,6 +1,17 @@
-import { map, compose, filter, reduce, append, pluck, lt, __,
- join, prop, path }  from 'ramda'
-import { test } from 'tape-modern'
+import {
+  map,
+  compose,
+  filter,
+  reduce,
+  append,
+  pluck,
+  lt,
+  __,
+  join,
+  prop,
+  path,
+} from 'ramda';
+import {test} from 'tape-modern';
 
 /**
  * Level 5 - Ramda All The Things
@@ -16,8 +27,8 @@ const data = {
         _id: '1',
         type: 'movie',
         name: 'Ghostbusters',
-        year: '1984'
-      }
+        year: '1984',
+      },
     },
     {
       key: '2',
@@ -25,8 +36,8 @@ const data = {
         _id: '2',
         type: 'movie',
         name: 'Caddyshack',
-        year: '1980'
-      }
+        year: '1980',
+      },
     },
     {
       key: '2',
@@ -34,11 +45,11 @@ const data = {
         _id: '3',
         type: 'movie',
         name: 'Groundhog Day',
-        year: '1993'
-      }
-    }
-  ]
-}
+        year: '1993',
+      },
+    },
+  ],
+};
 
 /**
  * Level 5 - Challenge 1
@@ -46,8 +57,9 @@ const data = {
  * map through the data.rows array and return a list of movie docs.
  */
 const challenge1 = () => {
-  return null
-}
+  const result = map(prop('doc'), data.rows);
+  return result;
+};
 
 /** Level 5 = Challenge 2
  *
@@ -56,8 +68,13 @@ const challenge1 = () => {
  *
  */
 const challenge2 = () => {
-  return null
-}
+  const isOld = compose(
+    lt(__, '1990'),
+    prop('year')
+  );
+  const result = filter(isOld, pluck('doc', data.rows));
+  return result;
+};
 
 /** level 5 - Challenge 3
  *
@@ -68,8 +85,20 @@ const challenge2 = () => {
  * check out - append - http://ramdajs.com/docs/#append
  */
 const challenge3 = () => {
-  return null
-}
+  const movies = map(prop('doc'), data.rows);
+
+  const reducerFn = (acc, val) => {
+    if (val.year >= '1980' && val.year < '1990') {
+      acc['80s'] = append(val, acc['80s'] || []);
+    } else if (val.year >= '1990' && val.year < '2000') {
+      acc['90s'] = append(val, acc['90s'] || []);
+    }
+    return acc;
+  };
+
+  const result = reduce(reducerFn, {}, movies);
+  return result;
+};
 
 /**
  * Level 5 - Challenge 4
@@ -82,38 +111,53 @@ const challenge3 = () => {
  *
  */
 const challenge4 = () => {
-  return [] 
-}
+  const getMovies = pluck('doc');
+  const createNameYearFn = function(movie) {
+    return `${movie.name} - ${movie.year}`;
+  };
+  const createLiFn = function(val) {
+    return `<li>${val}</li>`;
+  };
+  const getMovieNamesYears = compose(
+    createLiFn,
+    createNameYearFn
+  );
+  const result = map(getMovieNamesYears, getMovies(data.rows));
+  return result;
+};
 
 export default () => {
   test('Level 5 - Challenge 1', t => {
-    t.deepequals(pluck('doc', data.rows), challenge1())
-  })
+    t.deepequals(pluck('doc', data.rows), challenge1());
+  });
 
   test('Level 5 - Challenge 2', t => {
     t.deepequals(
       filter(
-        compose(lt(__, '1990'), prop('year')),
+        compose(
+          lt(__, '1990'),
+          prop('year')
+        ),
         pluck('doc', data.rows)
       ),
       challenge2()
-    )
-  })
+    );
+  });
 
   test('Level 5 - Challenge 3', t => {
     t.deepequals(challenge3(), {
-      '90s': [{ _id: '3', type: 'movie', name: 'Groundhog Day', year: '1993' }],
+      '90s': [{_id: '3', type: 'movie', name: 'Groundhog Day', year: '1993'}],
       '80s': [
-        { _id: '1', type: 'movie', name: 'Ghostbusters', year: '1984' },
-        { _id: '2', type: 'movie', name: 'Caddyshack', year: '1980' }
-      ]
-    })
-  })
+        {_id: '1', type: 'movie', name: 'Ghostbusters', year: '1984'},
+        {_id: '2', type: 'movie', name: 'Caddyshack', year: '1980'},
+      ],
+    });
+  });
 
   test('Level 5 - Challenge 4', t => {
     t.equal(
       challenge4().join(''),
       '<li>Ghostbusters - 1984</li><li>Caddyshack - 1980</li><li>Groundhog Day - 1993</li>'
-    )
-  })
-}
+    );
+  });
+};
