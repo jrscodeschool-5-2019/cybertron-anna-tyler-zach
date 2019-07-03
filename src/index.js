@@ -18,8 +18,8 @@ assert.deepequals = (a, b, msg) => {
 // level7()
 //level6()
 // level5()
-// level4()
-level3();
+level4();
+//level3();
 //level2()
 // level1();
 
