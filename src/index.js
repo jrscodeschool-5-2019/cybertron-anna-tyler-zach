@@ -19,8 +19,8 @@ assert.deepequals = (a, b, msg) => {
 //level6()
 // level5()
 // level4()
-//level3()
-level2()
+level3()
+//level2()
 //level1()
 
 window.test = test
