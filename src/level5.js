@@ -1,5 +1,16 @@
-import { map, compose, filter, reduce, append, pluck, lt, __,
- join, prop, path }  from 'ramda'
+import {
+  map,
+  compose,
+  filter,
+  reduce,
+  append,
+  pluck,
+  lt,
+  __,
+  join,
+  prop,
+  path
+} from 'ramda'
 import { test } from 'tape-modern'
 
 /**
@@ -46,7 +57,7 @@ const data = {
  * map through the data.rows array and return a list of movie docs.
  */
 const challenge1 = () => {
-  return null
+  return map(prop('doc'), data.rows)
 }
 
 /** Level 5 = Challenge 2
@@ -56,7 +67,12 @@ const challenge1 = () => {
  *
  */
 const challenge2 = () => {
-  return null
+  const movies = map(prop('doc'), data.rows)
+  const isOldMovie = compose(
+    lt(__, '1990'),
+    prop('year')
+  )
+  return filter(isOldMovie, movies)
 }
 
 /** level 5 - Challenge 3
@@ -68,7 +84,17 @@ const challenge2 = () => {
  * check out - append - http://ramdajs.com/docs/#append
  */
 const challenge3 = () => {
-  return null
+  const movies = map(prop('doc'), data.rows)
+  const reducer = (acc, movie) => {
+    const year = prop('year', movie)
+    if (year >= '1980' && year < '1990') {
+      acc['80s'] = append(movie, acc['80s'] || [])
+    } else if (year >= '1990' && year < '2000') {
+      acc['90s'] = append(movie, acc['90s'] || [])
+    }
+    return acc
+  }
+  return reduce(reducer, {}, movies)
 }
 
 /**
@@ -82,7 +108,19 @@ const challenge3 = () => {
  *
  */
 const challenge4 = () => {
-  return [] 
+  const movies = prop('doc')
+  const movieNameYear = movie => {
+    return `${movie.name} - ${movie.year}`
+  }
+  const movieList = movie => {
+    return `<li>${movie}</li>`
+  }
+  const createMovieLis = compose(
+    movieList,
+    movieNameYear,
+    movies
+  )
+  return map(createMovieLis, data.rows)
 }
 
 export default () => {
@@ -93,7 +131,10 @@ export default () => {
   test('Level 5 - Challenge 2', t => {
     t.deepequals(
       filter(
-        compose(lt(__, '1990'), prop('year')),
+        compose(
+          lt(__, '1990'),
+          prop('year')
+        ),
         pluck('doc', data.rows)
       ),
       challenge2()

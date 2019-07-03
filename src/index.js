@@ -11,17 +11,17 @@ import level6 from './level6'
 import level7 from './level7'
 import levelExtra from './levelExtra'
 
-assert.deepequals = (a,b,msg) => {
-  assert.ok(equals(a,b), msg)
+assert.deepequals = (a, b, msg) => {
+  assert.ok(equals(a, b), msg)
 }
 // levelExtra()
 // level7()
 //level6()
-level5()
+// level5()
 // level4()
 //level3()
 //level2()
-//level1()
+level1()
 
 window.test = test
 tapeBrowserColor()
