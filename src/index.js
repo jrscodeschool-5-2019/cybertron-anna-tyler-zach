@@ -21,7 +21,7 @@ assert.deepequals = (a, b, msg) => {
 // level4()
 level3();
 //level2()
-level1();
+// level1();
 
 window.test = test;
 tapeBrowserColor();
