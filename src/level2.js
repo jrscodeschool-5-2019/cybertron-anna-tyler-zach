@@ -37,7 +37,20 @@ export default function() {
     'Use reduce and the hex2color function to count list of hex values than have r in their name'
   const exercise3 = _ => {
     const hexes = ['#0000ff', '#f5f5dc', '#cd853f', '#663399', '#ffa500']
-    return null
+    const colorNames = map(hex2color, hexes)
+    const containsR = color => {
+      if (color.includes('r')) {
+        return true
+      } else {
+        return false
+      }
+    }
+    const filterer = filter(containsR, colorNames)
+    const reducerFunction = (acc, value) => {
+      return acc + 1
+    }
+    const result = reduce(reducerFunction, 0, filterer)
+    return result
   }
 
   const ex4 =
