@@ -20,8 +20,8 @@ assert.deepequals = (a, b, msg) => {
 // level5()
 // level4()
 //level3()
-//level2()
-level1()
+level2()
+//level1()
 
 window.test = test
 tapeBrowserColor()

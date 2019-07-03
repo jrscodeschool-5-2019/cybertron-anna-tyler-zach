@@ -9,14 +9,28 @@ export default function() {
     'Use map and the hex2color function to convert list of hex values to list of colors'
   const exercise1 = _ => {
     const hexes = ['#0000ff', '#f5f5dc', '#cd853f', '#663399', '#ffa500']
-    return null
+    const result = map(hex2color, hexes)
+    return result
   }
 
   const ex2 =
     'Use filter and the hex2color function to filter list of hex values to only list colors that are not blue, red, or green'
   const exercise2 = _ => {
     const hexes = ['#0000ff', '#f5f5dc', '#cd853f', '#663399', '#ffa500']
-    return null
+    function RGBfilter(colors) {
+      const colorName = hex2color(colors)
+      if (
+        colorName === 'red' ||
+        colorName === 'blue' ||
+        colorName === 'green'
+      ) {
+        return false
+      } else {
+        return true
+      }
+    }
+    const result = filter(RGBfilter, hexes)
+    return result
   }
 
   const ex3 =
@@ -40,7 +54,11 @@ export default function() {
       ['blue', 'beige', 'peru', 'rebeccapurple', 'orange'],
       ex1
     )
-    assert.deepequals(exercise2(), ['#f5f5dc', '#cd853f', '#663399', '#ffa500'], ex2)
+    assert.deepequals(
+      exercise2(),
+      ['#f5f5dc', '#cd853f', '#663399', '#ffa500'],
+      ex2
+    )
     assert.equal(exercise3(), 3, ex3)
     assert.equal(exercise4(), 2, ex4)
   })
