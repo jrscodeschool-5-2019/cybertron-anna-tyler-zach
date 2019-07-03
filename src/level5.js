@@ -57,8 +57,7 @@ const data = {
  * map through the data.rows array and return a list of movie docs.
  */
 const challenge1 = () => {
-  const result = map(prop('doc'), data.rows);
-  return result;
+  return map(prop('doc'), data.rows);
 };
 
 /** Level 5 = Challenge 2
@@ -68,12 +67,12 @@ const challenge1 = () => {
  *
  */
 const challenge2 = () => {
-  const isOld = compose(
+  const movies = map(prop('doc'), data.rows);
+  const isOldMovie = compose(
     lt(__, '1990'),
     prop('year')
   );
-  const result = filter(isOld, pluck('doc', data.rows));
-  return result;
+  return filter(isOldMovie, movies);
 };
 
 /** level 5 - Challenge 3
@@ -86,18 +85,16 @@ const challenge2 = () => {
  */
 const challenge3 = () => {
   const movies = map(prop('doc'), data.rows);
-
-  const reducerFn = (acc, val) => {
-    if (val.year >= '1980' && val.year < '1990') {
-      acc['80s'] = append(val, acc['80s'] || []);
-    } else if (val.year >= '1990' && val.year < '2000') {
-      acc['90s'] = append(val, acc['90s'] || []);
+  const reducer = (acc, movie) => {
+    const year = prop('year', movie);
+    if (year >= '1980' && year < '1990') {
+      acc['80s'] = append(movie, acc['80s'] || []);
+    } else if (year >= '1990' && year < '2000') {
+      acc['90s'] = append(movie, acc['90s'] || []);
     }
     return acc;
   };
-
-  const result = reduce(reducerFn, {}, movies);
-  return result;
+  return reduce(reducer, {}, movies);
 };
 
 /**
@@ -111,19 +108,19 @@ const challenge3 = () => {
  *
  */
 const challenge4 = () => {
-  const getMovies = pluck('doc');
-  const createNameYearFn = function(movie) {
+  const movies = prop('doc');
+  const movieNameYear = movie => {
     return `${movie.name} - ${movie.year}`;
   };
-  const createLiFn = function(val) {
-    return `<li>${val}</li>`;
+  const movieList = movie => {
+    return `<li>${movie}</li>`;
   };
-  const getMovieNamesYears = compose(
-    createLiFn,
-    createNameYearFn
+  const createMovieLis = compose(
+    movieList,
+    movieNameYear,
+    movies
   );
-  const result = map(getMovieNamesYears, getMovies(data.rows));
-  return result;
+  return map(createMovieLis, data.rows);
 };
 
 export default () => {

@@ -15,7 +15,11 @@ export default function() {
   const ex1 =
     'Use map to transform list of rockstar first,last name objects to objects with fullname'
   const exercise1 = _ => {
-    return null
+    function obj(name) {
+      return { fullname: fullname(name) }
+    }
+    const result = map(obj, stars)
+    return result
   }
 
   const ex2 = 'Use filter to filter list of rockstars that are still alive'
