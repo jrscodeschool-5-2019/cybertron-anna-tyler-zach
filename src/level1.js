@@ -6,13 +6,23 @@ export default function() {
   const ex1 = 'use map to double each value and return'
   const exercise1 = _ => {
     const numbers = [1, 2, 4, 8, 16, 32]
-    return null // return answer here
+    const result = map(val => val * 2, numbers)
+    return result // return answer here
   }
 
   const ex2 = 'use filter to only return even numbers'
   const exercise2 = _ => {
     const numbers = [1, 2, 3, 4, 5, 6]
-    return [] // return answer here
+    const isEven = num => {
+      if (num % 2 !== 1) {
+        return true
+      }
+      if (num % 2 === 1) {
+        return false
+      }
+    }
+    const result = filter(isEven, numbers)
+    return result // return answer here
   }
 
   const ex3 = 'use reduce to sum the numbers'
