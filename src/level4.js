@@ -6,29 +6,59 @@ export default function() {
   const ex1 = 'Use map to transform list of card data to list of images'
   const exercise1 = _ => {
     const data = getCards()
-    return null
+
+    const getImage = card => {
+      return `<img src=${card.image} />`
+    }
+    const result = map(getImage, data.cards)
+    return result
   }
 
   const ex2 = 'Use filter to filter list of cards of the suit clubs'
   const exercise2 = _ => {
     const data = getCards()
-    return null
+    const getClubs = card => {
+      return card.suit === 'CLUBS'
+    }
+    const result = filter(getClubs, data.cards)
+    return result
   }
 
   const ex3 =
     'Use reduce and count the number of cards that have a value of 8 or value of 6'
   const exercise3 = _ => {
     const data = getCards()
-
-    return null
+    // console.log(JSON.stringify(data.cards, null, 2))
+    const cardCounter = (acc, card) => {
+      if (card.value === '8' || card.value === '6') {
+        acc = acc + 1
+      }
+      return acc
+    }
+    const result = reduce(cardCounter, 0, data.cards)
+    return result
   }
 
   const ex4 = `Use map, filter and reduce with compose
     to show all cards as images that contain values of 8 or 6`
   const exercise4 = _ => {
     const data = getCards()
-
-    return null
+    const stringMaker = reduce((str, card) => {
+      str = str + card
+      return str
+    }, '')
+    const imgMaker = map(card => {
+      return `<img src=${card.image} />`
+    })
+    const cardCounter = filter(card => {
+      return card.value === '8' || card.value === '6'
+    })
+    const result = compose(
+      stringMaker,
+      imgMaker,
+      cardCounter
+    )
+    return result(data.cards)
   }
 
   /* tests to validate exercises go here */
