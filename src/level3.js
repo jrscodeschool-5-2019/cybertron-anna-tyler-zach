@@ -24,19 +24,42 @@ export default function() {
 
   const ex2 = 'Use filter to filter list of rockstars that are still alive'
   const exercise2 = _ => {
-    return null
+    const livingStars = star => {
+      return prop('alive', star)
+    }
+    const result = filter(livingStars, stars)
+    return result
   }
 
   const ex3 =
     'Use reduce and count the number of stars that are no longer living'
   const exercise3 = _ => {
-    return null
+    const deadStarCounter = (acc, star) => {
+      if (!prop('alive', star)) {
+        acc = acc + 1
+      }
+      return acc
+    }
+    const result = reduce(deadStarCounter, 0, stars)
+    return result
   }
 
   const ex4 =
     'Use map, filter and reduce with compose show a concatenated string of the fullnames of each alive star'
   const exercise4 = _ => {
-    return null
+    const stringConcat = star => {
+      let str = ''
+      str = str + star
+      return str
+    }
+    const isAlive = filter(star => prop('alive', star))
+    const fullNamer = map(fullname)
+    const result = compose(
+      stringConcat,
+      fullNamer,
+      isAlive
+    )
+    return result(stars)
   }
 
   /* tests to validate exercises go here */
